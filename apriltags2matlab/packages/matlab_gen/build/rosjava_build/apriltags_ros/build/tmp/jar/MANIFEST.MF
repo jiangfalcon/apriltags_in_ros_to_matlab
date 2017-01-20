@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Export-Package: apriltags_ros;version="1.0";uses:="apriltags,org.ros.i
+ nternal.message"
+Bundle-Version: 1.0
+Tool: Bnd-2.1.0.20130426-122213
+Bundle-Name: apriltags_ros
+Bnd-LastModified: 1484849675377
+Created-By: 1.7.0_60 (Oracle Corporation)
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.ros.rosjava_messages.apriltags_ros
+Import-Package: apriltags;version="[1.0,2)",org.ros.internal.message
+

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package>
+  <name>apriltags_ros</name>
+  <version>1.0</version>
+  
+  <build_depend>apriltags</build_depend>
+  <build_depend>message_generation</build_depend>
+  
+</package>
+
+
