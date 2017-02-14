@@ -12,7 +12,7 @@ classdef AprilTagDetectionArray < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        MD5Checksum = '93c0a301ed9e6633dc34b8117d49ebd4' % The MD5 Checksum of the message definition
+        MD5Checksum = '3634a28cb41a2b80ecc45cb2a20be2ca' % The MD5 Checksum of the message definition
     end
     
     properties (Access = protected)

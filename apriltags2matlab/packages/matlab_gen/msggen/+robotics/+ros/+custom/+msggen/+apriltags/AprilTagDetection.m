@@ -12,7 +12,7 @@ classdef AprilTagDetection < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        MD5Checksum = 'c7dd623e54eca222750cda2ae82f5257' % The MD5 Checksum of the message definition
+        MD5Checksum = 'cd04cc9f4890d336de64ef6572ae3320' % The MD5 Checksum of the message definition
     end
     
     properties (Access = protected)
@@ -20,22 +20,24 @@ classdef AprilTagDetection < robotics.ros.Message
     end
     
     properties (Constant, Access = protected)
+        GeometryMsgsPointClass = robotics.ros.msg.internal.MessageFactory.getClassForType('geometry_msgs/Point') % Dispatch to MATLAB class for message type geometry_msgs/Point
         GeometryMsgsPoseStampedClass = robotics.ros.msg.internal.MessageFactory.getClassForType('geometry_msgs/PoseStamped') % Dispatch to MATLAB class for message type geometry_msgs/PoseStamped
     end
     
     properties (Dependent)
         Id
         Size
+        Pixcoord
         Pose
     end
     
     properties (Access = protected)
-        Cache = struct('Pose', []) % The cache for fast data access
+        Cache = struct('Pixcoord', [], 'Pose', []) % The cache for fast data access
     end
     
     properties (Constant, Hidden)
-        PropertyList = {'Id', 'Pose', 'Size'} % List of non-constant message properties
-        ROSPropertyList = {'id', 'pose', 'size'} % List of non-constant ROS message properties
+        PropertyList = {'Id', 'Pixcoord', 'Pose', 'Size'} % List of non-constant message properties
+        ROSPropertyList = {'id', 'pixcoord', 'pose', 'size'} % List of non-constant ROS message properties
     end
     
     methods
@@ -108,6 +110,26 @@ classdef AprilTagDetection < robotics.ros.Message
             obj.JavaMessage.setSize(size);
         end
         
+        function pixcoord = get.Pixcoord(obj)
+            %get.Pixcoord Get the value for property Pixcoord
+            if isempty(obj.Cache.Pixcoord)
+                obj.Cache.Pixcoord = feval(obj.GeometryMsgsPointClass, obj.JavaMessage.getPixcoord);
+            end
+            pixcoord = obj.Cache.Pixcoord;
+        end
+        
+        function set.Pixcoord(obj, pixcoord)
+            %set.Pixcoord Set the value for property Pixcoord
+            validateattributes(pixcoord, {obj.GeometryMsgsPointClass}, {'nonempty', 'scalar'}, 'AprilTagDetection', 'Pixcoord');
+            
+            obj.JavaMessage.setPixcoord(pixcoord.getJavaObject);
+            
+            % Update cache if necessary
+            if ~isempty(obj.Cache.Pixcoord)
+                obj.Cache.Pixcoord.setJavaObject(pixcoord.getJavaObject);
+            end
+        end
+        
         function pose = get.Pose(obj)
             %get.Pose Get the value for property Pose
             if isempty(obj.Cache.Pose)
@@ -132,6 +154,7 @@ classdef AprilTagDetection < robotics.ros.Message
     methods (Access = protected)
         function resetCache(obj)
             %resetCache Resets any cached properties
+            obj.Cache.Pixcoord = [];
             obj.Cache.Pose = [];
         end
         
@@ -152,6 +175,7 @@ classdef AprilTagDetection < robotics.ros.Message
             cpObj.Size = obj.Size;
             
             % Recursively copy compound properties
+            cpObj.Pixcoord = copy(obj.Pixcoord);
             cpObj.Pose = copy(obj.Pose);
         end
         
@@ -159,6 +183,7 @@ classdef AprilTagDetection < robotics.ros.Message
             %reload Called by loadobj to assign properties
             obj.Id = strObj.Id;
             obj.Size = strObj.Size;
+            obj.Pixcoord = feval([obj.GeometryMsgsPointClass '.loadobj'], strObj.Pixcoord);
             obj.Pose = feval([obj.GeometryMsgsPoseStampedClass '.loadobj'], strObj.Pose);
         end
     end
@@ -175,6 +200,7 @@ classdef AprilTagDetection < robotics.ros.Message
             
             strObj.Id = obj.Id;
             strObj.Size = obj.Size;
+            strObj.Pixcoord = saveobj(obj.Pixcoord);
             strObj.Pose = saveobj(obj.Pose);
         end
     end

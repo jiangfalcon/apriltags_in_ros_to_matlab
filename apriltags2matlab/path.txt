@@ -1,2 +1,8 @@
+delete 'C:\Users\nthuldsc\Desktop\apriltags2matlab\packages\matlab_gen'(optional)
+delete ''(optional)
 folderpath = 'C:\Users\nthuldsc\Desktop\apriltags2matlab\packages';
 rosgenmsg(folderpath);
+edit javaclasspath.txt
+addpath('C:\Users\nthuldsc\Desktop\apriltags2matlab\packages\matlab_gen\msggen')
+savepath
+restart
