@@ -13,12 +13,11 @@ camera_info_sub = rossubscriber('/left_cam/camera_info');
 color_point_sub = rossubscriber('/color_point');
 
 fprintf('Done.\n');  
-%%
-% struct declare
+%% struct declare
 num = struct('id',[],'tag_detection',[]);
 color = struct('id','tag_detection');
 
-%%
+%% main code
 camera_info_data = receive(camera_info_sub, 10);
 fx = camera_info_data.K(1);
 fy = camera_info_data.K(5);    
@@ -65,7 +64,6 @@ while 1;
     
     figure(1)
     % plot tags
-    %plot3(pos{num.id}(1),pos{num.id}(2),pos{num.id}(3),color(num.id,:)); % for 3-d
     plot(pos{num.id}(1),pos{num.id}(2),color(num.id,:)); % for 2-d
     hold on 
     
@@ -78,7 +76,7 @@ while 1;
     
     % plot color point
     if color_point_data.Point.Z == 1 % Z is the detection state (0:inexist 1:exist)
-        % calculate the vector of color point w.r.t. tag0
+        % extract pixel coordinate of color point
         px = color_point_data.Point.X;
         py = double(camera_info_data.Height) - color_point_data.Point.Y;
     else
@@ -111,23 +109,14 @@ while 1;
         end
     end
     
-    % plot camera
-    %plot3(0,0,0,'k.','MarkerSize',40);
     grid on
-    axis([-0.3 0.3 -0.3 0.3]); % for 2-d
-    %axis([-0.3 0.3 -0.3 0.3 0 1]); % for 3-d
+    axis([-0.3 0.3 -0.3 0.3]);
     axis square
-    %view([0,0,1]); % for 3-d
-    %view([1,-0.5,0.5]); % for 3-d
     xlabel('x');ylabel('y');zlabel('z');
     hold on
     end
     hold off
-    %getframe;
-    %pause(0.01)
 end
-
-
 %% close hardware
 % Disconnect ROS master
 rosshutdown;
